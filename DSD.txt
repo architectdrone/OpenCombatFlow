@@ -1,7 +1,7 @@
 Dictionary Structure Definitions
 
 What is this?
-This file details the structure of the dictionaries used for exchanging data. I have tried to make them as extensible as possible.
+This file details the structure of the dictionaries ("blocks") used for exchanging data. I have tried to make them as extensible as possible.
 
 ACTIONBLOCK:
 	(MANDATORY ATTRIBUTES)
@@ -16,3 +16,13 @@ ACTIONBLOCK:
 	"effects": A list of strings specifying effects to apply to effected parties. The strings need not follow any convention, and exist for further specification by the programmer.
 	"chance": A string, in dice/decision form, representing the chance that the action succeeds. On failure, the action does not effect the targeted character, though it may effect others. If none is specified, the action succeeds 100% of the time.
 	"failureCondition": An ActionBlock that will be executed on the failure of the chance condition. If not provided, nothing will occur on failure. If "chance" is not provided, this will be ignored.
+
+	
+RANGEBLOCK:
+	(NOTE)
+	All attributes of the RangeBlock should be understood as "AND" based, as opposed to "OR" based. For example, if both a group and an area range are specified, the RangeBlock will only target members of the group in the area range.
+	
+	(MANDATORY)
+	
+	(NON-MANDATORY)
+	
