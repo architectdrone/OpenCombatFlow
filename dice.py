@@ -26,6 +26,8 @@ def _evaluateHelper(to_eval):
 		#See if the statement is a dice statement, by testing if there is a 'd' in it.
 		if "d" in statement:
 			total+=roll(statement)
+		if statement == "":
+			pass
 		else: #Otherwise, we assume that it is a constant.
 			total+=int(statement)
 	return total
@@ -86,3 +88,4 @@ def evaluate(to_eval, return_bool = False, failure_value = 0):
 				return False
 			else:
 				return failure_value
+
