@@ -13,7 +13,8 @@ ACTIONBLOCK:
 	"damage": A dictionary containing all of the types of damage dealt, on attack success. Each key corresponds with either an integer (which is simply the amount of damage), or some string code. If dice/decision format is used, failure represents a damage amount of 0.
 		"base": The default damage
 		<any string>: Specify what type of damage should be dealt (EX: Piercing, Bashing, Magic). If the person being attacked does not have a resistance to that type of damage, that damage will be treated as base damage.
-	"effects": A list of strings specifying effects to apply to effected parties. The strings need not follow any convention, and exist for further specification by the programmer.
+	"effects": A dictionary specifying effects to apply to effected parties. The strings need not follow any convention, and exist for further specification by the programmer.
+		<any string>: The duration of the effect specified by the string.
 	"chance": A string, in dice/decision form, representing the chance that the action succeeds. On failure, the action does not effect the targeted character, though it may effect others. If none is specified, the action succeeds 100% of the time.
 	"failureCondition": An ActionBlock that will be executed on the failure of the chance condition. If not provided, nothing will occur on failure. If "chance" is not provided, this will be ignored.
 
@@ -25,4 +26,26 @@ RANGEBLOCK:
 	(MANDATORY)
 	
 	(NON-MANDATORY)
+	"center": A tuple specifying the coordinate of the center of an area to be effected. Has no effect if range is not specified.
+	"range": Distance from center to effect. Has no effect if no center is not specified.
+	"group": Group of characters to effect.
+	"character": Specify a specific character. If you want to select a single random character (in range, of course) use the string "r".
+
+REACTIONBLOCK:
+	(MANDATORY)
+	"user": The character issuing this reaction.
+	
+	(NON-MANDATORY)
+	"resistance": A dictionary containing all resistances to different types of damage. Each field represents an amount of damage to reduce, with the minimum being 0. Dice format is accepted.
+		"base": Base damage reduction.
+		<any string>: Specific damage reduction.
+	"action": An actionBlock containing a retaliatory action to be executed.
+
+DAMAGEBLOCK:
+	(MANDATORY)
+	
+	(NON-MANDATORY)
+	"damageTaken": An integer representing the damage to be dealt to HP.
+	"effects": A dictionary specifying effects to add.
+		<any string>: The duration of the effect specified by the string.
 	
