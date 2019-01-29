@@ -34,6 +34,11 @@ class combatHandler():
 		action = actor.getActionBlock()
 		self._executeActionBlock(action)
 		
+		#Go to the next character.
+		currentCharacterIndex+=1
+		if currentCharacterIndex >= len(self.alive):
+			currentCharacterIndex = 0
+		
 	def addCharacter(self, character):
 		self.alive.append(character)
 	
