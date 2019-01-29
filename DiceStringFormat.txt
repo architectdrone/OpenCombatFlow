@@ -1,0 +1,18 @@
+Dice String Format
+A document specifying the format to communicate dice rolls.
+
+CONSTANTS:
+Adding constants to a dice string is simple. Simply type the constant.
+Example: "9" evaluates to 9.
+
+DICE:
+Dice are specified using the common RPG specifying system. The format is <number_of_dice_to_roll>d<sides_of_dice>
+Example: "3d6" means "roll three six-sided dice and sum the values"
+
+OPERATIONS:
+The only supported operations are "+" and "-". Any number of dice and constants can be chained in this way.
+Example: "3d6+5"
+
+COMPARISONS:
+Use comparisons to specify a fail/win state. The following comparisons are accepted: "<", ">", and "=". The results of a fail/win state depend on the circumstance.
+Example: "3d6+5>9" Means that a certain condition should be executed if the sum of three dice rolls of a six-sided die and 5 is greater than 9.
