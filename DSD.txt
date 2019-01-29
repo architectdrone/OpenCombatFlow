@@ -1,0 +1,18 @@
+Dictionary Structure Definitions
+
+What is this?
+This file details the structure of the dictionaries used for exchanging data. I have tried to make them as extensible as possible.
+
+ACTIONBLOCK:
+	(MANDATORY ATTRIBUTES)
+	"range": A RangeBlock specifying which characters are effected.
+	"user": The character using the action.
+	"logMessage": A string to be shown when this action is executed.
+	
+	(NON-MANDATORY ATTRIBUTES)
+	"damage": A dictionary containing all of the types of damage dealt, on attack success. Each key corresponds with either an integer (which is simply the amount of damage), or some string code. If dice/decision format is used, failure represents a damage amount of 0.
+		"base": The default damage
+		<any string>: Specify what type of damage should be dealt (EX: Piercing, Bashing, Magic). If the person being attacked does not have a resistance to that type of damage, that damage will be treated as base damage.
+	"effects": A list of strings specifying effects to apply to effected parties. The strings need not follow any convention, and exist for further specification by the programmer.
+	"chance": A string, in dice/decision form, representing the chance that the action succeeds. On failure, the action does not effect the targeted character, though it may effect others. If none is specified, the action succeeds 100% of the time.
+	"failureCondition": An ActionBlock that will be executed on the failure of the chance condition. If not provided, nothing will occur on failure. If "chance" is not provided, this will be ignored.
