@@ -23,7 +23,7 @@ class Character():
 		raise NotImplementedError
 
 	def preTurn(self):
-		'''This method is called after _update (which ticks down status effects) and before getActionBlock. It doesn't need to be implemented, but it might help with things like status effects.'''
+		'''This method is called before _update. It doesn't need to be implemented, but it might help with things like status effects.'''
 
 		pass
 	
@@ -119,9 +119,18 @@ class combatHandler():
 		
 		#Get the actor (character executing actions)
 		actor = self.alive[self.currentCharacterIndex] #The character executing the action.
+
+		#Do additional things, which do not relate to getting actions.
+		actor.preTurn()
+		actor._update()
+
+		#Get, and execute, the desired action.
 		action = actor.getActionBlock()
 		self._executeActionBlock(action)
 		
+		#Do one more additional thing.
+		actor.postTurn()
+
 		#Go to the next character.
 		self.currentCharacterIndex+=1
 		if self.currentCharacterIndex >= len(self.alive):
