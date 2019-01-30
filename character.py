@@ -69,23 +69,24 @@ class combatHandler():
 
 				
 	def _getDamageBlock(self, action, reaction):
-		'''Get damage'''
+		'''PRIVATE: Get damage'''
 		NO_EFFECTS_ON_0_DAMAGE = True #Whether or not effects should be dealt if 0 damage is dealt.
 		
 		toReturn = {}
 
 		#Look through each key in action['damage'], and see if the reaction has an associated resistance. If not, add it to the total HP lost. If so, subtract resistance and add it to total HP lost.
 		total = 0
-		for dType in action['damage']:
-			if dType in reaction['resistance']:
-				total+=max(0, action['damage'][dType]-reaction['resistance'][dType])
+		for dType in action['damage']: #Loop through the set of all keys in the damage set.
+			if dType in reaction['resistance']: #See if that key is in the resistance.
+				total+=max(0, action['damage'][dType]-reaction['resistance'][dType]) #If so, add that to the total (with minimum being 0).
 			else:
-				total+=action['damage'][dType]
-		toReturn['damageTaken'] = total
+				total+=action['damage'][dType] #Otherwise, just add the total damage amount 
+		toReturn['damageTaken'] = total #Add it to the damageBlock.
 
-		if "effects" in action:
-			if not (total == 0 and NO_EFFECTS_ON_0_DAMAGE):
-				toReturn['effects'] = action['effects']
+		#Handle effects
+		if "effects" in action: #Only do this if effects are specified.
+			if not (total == 0 and NO_EFFECTS_ON_0_DAMAGE): #Also, only do it if the NO_EFFECTS_ON_0_DAMAGE clause doesn't hold.
+				toReturn['effects'] = action['effects'] #Add it to the damage block.
 		
 		return toReturn
 
