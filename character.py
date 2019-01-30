@@ -12,16 +12,16 @@ class Character():
 		'''Returns a selected inter-personal action. If the chosen action is not interpersonal, a blank dict will be returned.
 		This is a placeholder, and should be implemented in a derived class.'''
 
-		return {'error': 'Get Action has not yet been implemented'}
+		raise NotImplementedError
 	
 	def getReactionBlock(self, action):
 		'''Returns a selected reaction. If the chosen action is not interpersonal, a blank dict will be returned.
 		This is a placeholder, and should be implemented in a derived class.'''
 
-		return {'error': 'Get Reaction has not yet been implemented'}
-	
-	def takeDamage(self, damageBlock):
-		'''Causes character to take the amount of damage specified by the damageBlock, along with all status effects.'''
+		raise NotImplementedError
+
+	def _takeDamage(self, damageBlock):
+		'''PRIVATE: Causes character to take the amount of damage specified by the damageBlock, along with all status effects.'''
 		
 		#Take damage.
 		if "damageTaken" in damageBlock:
@@ -37,8 +37,8 @@ class Character():
 				else:
 					self.effects[effect]=damageBlock['effects'][effect] #If the effect is not active, we add the effect and set it to the given duration.
 		
-	def inRange(self, rangeBlock):
-		'''Returns true if the character is in a certain range.'''
+	def _inRange(self, rangeBlock):
+		'''PRIVATE: Returns true if the character is in a certain range.'''
 
 		#Check if the range is empty
 		if rangeBlock == {}:
@@ -82,8 +82,6 @@ class combatHandler():
 		#Get the actor (character executing actions)
 		actor = self.alive[self.currentCharacterIndex] #The character executing the action.
 		action = actor.getActionBlock()
-		if "error" in action:
-			raise Exception(f"Error: {action['error']}")
 		self._executeActionBlock(action)
 		
 		#Go to the next character.
@@ -100,7 +98,7 @@ class combatHandler():
 		#For each effected character, as determined by their response to the range query, get defense and deal damage
 		range = action['range']
 		for character in self.alive:
-			if character.inRange(range):
+			if character._inRange(range):
 
 				#Chance Handling
 				if "chance" in action: #Check if a chance is specified.
@@ -111,10 +109,8 @@ class combatHandler():
 				
 				#Gathering reaction and creating damage
 				reaction = character.getReactionBlock(self, action) #Get the defensive reaction of the effected character.
-				if 'error' in reaction:
-					raise Exception(f"Reaction Error: {reaction['error']}")
 				damage = self._getDamageBlock(action, reaction) #Get the damage block representing the damage taken by the character.
-				character.takeDamage(damage) #Cause character to take damage
+				character._takeDamage(damage) #Cause character to take damage
 
 				#Retaliation
 				if 'action' in reaction: #Check if an action is specified in the reactionBlock.
