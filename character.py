@@ -9,6 +9,7 @@ class Character():
 	groups = [] #Groups of characters. These are specifed as strings. EX: "Enemies", "Undead", etc.
 	name = "Set" #A bit of a pun, as the name Set is a name from the Bible.
 
+	#Things to implement in derived classes.
 	def getActionBlock(self):
 		'''Returns a selected inter-personal action. If the chosen action is not interpersonal, a blank dict will be returned.
 		This is a placeholder, and should be implemented in a derived class.'''
@@ -21,6 +22,17 @@ class Character():
 
 		raise NotImplementedError
 
+	def preTurn(self):
+		'''This method is called after _update (which ticks down status effects) and before getActionBlock. It doesn't need to be implemented, but it might help with things like status effects.'''
+
+		pass
+	
+	def postTurn(self):
+		'''This method is called at the very end of the turn. It doesn't need to be implemented.'''
+
+		pass
+	
+	#Getters/Setters
 	def setPosition(self, x, y=None, z=None):
 		'''Sets the position. Specify however many coordinates you need, up to 3.'''
 		self.position[0] = x
@@ -36,6 +48,7 @@ class Character():
 		else:
 			return True
 
+	#Private Methods
 	def _update(self):
 		'''PRIVATE: Updates status effects, and any other general character things to complete before the turn starts.'''
 
