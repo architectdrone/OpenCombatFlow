@@ -20,6 +20,14 @@ class Character():
 
 		raise NotImplementedError
 
+	def setPosition(self, x, y=None, z=None):
+		'''Sets the position. Specify however many coordinates you need, up to 3.'''
+		self.position[0] = x
+		if y is not None:
+			self.position[1] = y
+		if z is not None:
+			self.position[2] = z
+
 	def _takeDamage(self, damageBlock):
 		'''PRIVATE: Causes character to take the amount of damage specified by the damageBlock, along with all status effects.'''
 		
@@ -51,8 +59,8 @@ class Character():
 			y1 = self.position[1]
 			z1 = self.position[2]
 			x2 = rangeBlock['center'][0]
-			y2 = rangeBlock['center'][1]
-			z2 = rangeBlock['center'][2]
+			y2 = (0, rangeBlock['center'][1])[len(rangeBlock['center'])>=2] #Ternary statement that says if the second element of center exists, use it, otherwise use 0.
+			z2 = (0, rangeBlock['center'][2])[len(rangeBlock['center'])==3] #See above.
 			dist = math.sqrt((x2-x1)**2+(y2-y1)**2+(z2-z1)**2)
 
 			#Compare Distances
