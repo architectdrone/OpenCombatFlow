@@ -36,6 +36,15 @@ class Character():
 		else:
 			return True
 
+	def _update(self):
+		'''PRIVATE: Updates status effects, and any other general character things to complete before the turn starts.'''
+
+		#Tick down status effects.
+		for effect in self.effects: #Loop through all keys in effects.
+			self.effects[effect]-=1 #Decrement the count for each.
+			if self.effects[effect] <= 0: #If the counter is less than 0
+				self.effects.pop(effect, None) #Remove effects whose counter value is 0.
+
 	def _takeDamage(self, damageBlock):
 		'''PRIVATE: Causes character to take the amount of damage specified by the damageBlock, along with all status effects.'''
 		
