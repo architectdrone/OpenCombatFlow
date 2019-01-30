@@ -4,7 +4,7 @@ import math
 
 class Character():
 	HP = 1 #Just so that the character doesn't instantly die.
-	effects = [] #A list of effects. We start with no effects.
+	effects = {} #A dictionary of effects. We start with no effects.
 	position = [0, 0, 0] #Position is a list object so that it can be easily modified.
 	groups = [] #Groups of characters. These are specifed as strings. EX: "Enemies", "Undead", etc.
 
@@ -20,9 +20,21 @@ class Character():
 	
 	def takeDamage(self, damageBlock):
 		'''Causes character to take the amount of damage specified by the damageBlock, along with all status effects.'''
-		#Not yet implemented due to dictionary structure not being determined.
-		return {'error': 'Cannot take damage.'}
-	
+		
+		#Take damage.
+		if "damageTaken" in damageBlock:
+			self.HP-=damageBlock['damageTaken']
+			if self.HP < 0: #Enforce that HP must be >=0
+				self.HP = 0
+		
+		#Take status effects
+		if "effects" in damageBlock:
+			for effect in damageBlock['effects']: #Look at each effect that was applied by the damageBlock
+				if effect in self.effects: #If we already have the effect active.
+					self.effects[effect]+=damageBlock['effects'][effect] #Add the amount of time that the effect should be active to the amount of time that is currently active.
+				else:
+					self.effects[effect]=damageBlock['effects'][effect] #If the effect is not active, we add the effect and set it to the given duration.
+		
 	def inRange(self, rangeBlock):
 		'''Returns true if the character is in a certain range.'''
 
