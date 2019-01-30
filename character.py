@@ -142,6 +142,7 @@ class combatHandler():
 	def _executeActionBlock(self, action):
 		'''PRIVATE: Executes action.'''
 		
+		newlyDeadCharacters = []
 		#For each effected character, as determined by their response to the range query, get defense and deal damage
 		range = action['range']
 		for character in self.alive:
@@ -159,10 +160,18 @@ class combatHandler():
 				damage = self._getDamageBlock(action, reaction) #Get the damage block representing the damage taken by the character.
 				character._takeDamage(damage) #Cause character to take damage
 
+				#See if the character was killed by this action.
+				if character.isDead():
+					newlyDeadCharacters.append(character)
+
 				#Retaliation
 				if 'action' in reaction: #Check if an action is specified in the reactionBlock.
 					self._executeActionBlock(reaction['action'])
 
+		#Kill Dead characters. We can't do this from within the above for loop, because it would mess up the comprehension.
+		for character in newlyDeadCharacters:
+			self.alive.remove(character)
+			self.dead.append(character)
 				
 	def _getDamageBlock(self, action, reaction):
 		'''PRIVATE: Get damage'''
