@@ -9,13 +9,15 @@ class Character():
 	groups = [] #Groups of characters. These are specifed as strings. EX: "Enemies", "Undead", etc.
 
 	def getActionBlock(self):
-		'''Returns a selected inter-personal action. If the chosen action is not interpersonal, a blank dict will be returned.'''
-		#Not yet implemented due to dictionary structure not being determined.
+		'''Returns a selected inter-personal action. If the chosen action is not interpersonal, a blank dict will be returned.
+		This is a placeholder, and should be implemented in a derived class.'''
+
 		return {'error': 'Get Action has not yet been implemented'}
 	
 	def getReactionBlock(self, action):
-		'''Returns a selected reaction. If the chosen action is not interpersonal, a blank dict will be returned.'''
-		#Not yet implemented due to dictionary structure not being determined.
+		'''Returns a selected reaction. If the chosen action is not interpersonal, a blank dict will be returned.
+		This is a placeholder, and should be implemented in a derived class.'''
+
 		return {'error': 'Get Reaction has not yet been implemented'}
 	
 	def takeDamage(self, damageBlock):
@@ -80,6 +82,8 @@ class combatHandler():
 		#Get the actor (character executing actions)
 		actor = self.alive[self.currentCharacterIndex] #The character executing the action.
 		action = actor.getActionBlock()
+		if "error" in action:
+			raise Exception(f"Error: {action['error']}")
 		self._executeActionBlock(action)
 		
 		#Go to the next character.
@@ -107,6 +111,8 @@ class combatHandler():
 				
 				#Gathering reaction and creating damage
 				reaction = character.getReactionBlock(self, action) #Get the defensive reaction of the effected character.
+				if 'error' in reaction:
+					raise Exception(f"Reaction Error: {reaction['error']}")
 				damage = self._getDamageBlock(action, reaction) #Get the damage block representing the damage taken by the character.
 				character.takeDamage(damage) #Cause character to take damage
 
