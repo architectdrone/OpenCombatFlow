@@ -51,19 +51,42 @@ class combatHandler():
 		for character in self.alive:
 			if character.inRange(range):
 
+				#Chance Handling
 				if "chance" in action: #Check if a chance is specified.
 					if dice.evaluate(action['chance'], return_bool=True) == False: #What happens if the chance fails
 						if "failureCondition" in action: #Check to see if a failure condition is specified. 
 							self._executeActionBlock(action['failureCondition']) #Execute the failure condition.
 						continue #Do not get a reaction, do not deal damage.
 				
+				#Gathering reaction and creating damage
 				reaction = character.getReactionBlock(self, action) #Get the defensive reaction of the effected character.
 				damage = self._getDamageBlock(action, reaction) #Get the damage block representing the damage taken by the character.
 				character.takeDamage(damage) #Cause character to take damage
+
+				#Retaliation
+				if 'action' in reaction: #Check if an action is specified in the reactionBlock.
+					self._executeActionBlock(reaction['action'])
+
 				
 	def _getDamageBlock(self, action, reaction):
 		'''Get damage'''
+		NO_EFFECTS_ON_0_DAMAGE = True #Whether or not effects should be dealt if 0 damage is dealt.
+		
+		toReturn = {}
 
-		#Look through each key in 
-		pass
+		#Look through each key in action['damage'], and see if the reaction has an associated resistance. If not, add it to the total HP lost. If so, subtract resistance and add it to total HP lost.
+		total = 0
+		for dType in action['damage']:
+			if dType in reaction['resistance']:
+				total+=max(0, action['damage'][dType]-reaction['resistance'][dType])
+			else:
+				total+=action['damage'][dType]
+		toReturn['damageTaken'] = total
+
+		if "effects" in action:
+			if not (total == 0 and NO_EFFECTS_ON_0_DAMAGE):
+				toReturn['effects'] = action['effects']
+		
+		return toReturn
+
 	
