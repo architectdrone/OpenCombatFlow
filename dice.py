@@ -1,5 +1,5 @@
 import random
-
+#See DiceStringFormat.txt for how to use dice strings.
 def roll(to_roll):
 	'''Pass in a string which contains only a dice statement (to_roll), and return a number consistent with the query.'''
 	numberDice = int(to_roll.split('d')[0])

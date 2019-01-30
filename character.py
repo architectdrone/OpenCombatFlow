@@ -1,4 +1,5 @@
 #Open Combat Flow
+import dice
 
 class Character():
 	def getActionBlock(self):
@@ -30,14 +31,14 @@ class combatHandler():
 		'''Executes the turn of the current character.'''
 		
 		#Get the actor (character executing actions)
-		actor = self.alive[currentCharacterIndex] #The character executing the action.
+		actor = self.alive[self.currentCharacterIndex] #The character executing the action.
 		action = actor.getActionBlock()
 		self._executeActionBlock(action)
 		
 		#Go to the next character.
-		currentCharacterIndex+=1
-		if currentCharacterIndex >= len(self.alive):
-			currentCharacterIndex = 0
+		self.currentCharacterIndex+=1
+		if self.currentCharacterIndex >= len(self.alive):
+			self.currentCharacterIndex = 0
 		
 	def addCharacter(self, character):
 		self.alive.append(character)
@@ -49,12 +50,20 @@ class combatHandler():
 		range = action['range']
 		for character in self.alive:
 			if character.inRange(range):
+
+				if "chance" in action: #Check if a chance is specified.
+					if dice.evaluate(action['chance'], return_bool=True) == False: #What happens if the chance fails
+						if "failureCondition" in action: #Check to see if a failure condition is specified. 
+							self._executeActionBlock(action['failureCondition']) #Execute the failure condition.
+						continue #Do not get a reaction, do not deal damage.
+				
 				reaction = character.getReactionBlock(self, action) #Get the defensive reaction of the effected character.
 				damage = self._getDamageBlock(action, reaction) #Get the damage block representing the damage taken by the character.
 				character.takeDamage(damage) #Cause character to take damage
 				
 	def _getDamageBlock(self, action, reaction):
 		'''Get damage'''
-		#Not yet implemented due to dictionary structure not being determined.
+
+		#Look through each key in 
 		pass
 	
