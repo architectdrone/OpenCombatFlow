@@ -1,7 +1,13 @@
 #Open Combat Flow
 import dice
+import math
 
 class Character():
+	HP = 1 #Just so that the character doesn't instantly die.
+	effects = [] #A list of effects. We start with no effects.
+	position = [0, 0, 0] #Position is a list object so that it can be easily modified.
+	groups = [] #Groups of characters. These are specifed as strings. EX: "Enemies", "Undead", etc.
+
 	def getActionBlock(self):
 		'''Returns a selected inter-personal action. If the chosen action is not interpersonal, a blank dict will be returned.'''
 		#Not yet implemented due to dictionary structure not being determined.
@@ -19,8 +25,37 @@ class Character():
 	
 	def inRange(self, rangeBlock):
 		'''Returns true if the character is in a certain range.'''
-		#Not yet implemented due to dictionary structure not being determined.
-		return False
+
+		#Check if the range is empty
+		if rangeBlock == {}:
+			return False
+
+		#Do area filtering
+		if "center" in rangeBlock and "distance" in rangeBlock: #If center and distance are BOTH present.
+			#Compute distance
+			x1 = self.position[0]
+			y1 = self.position[1]
+			z1 = self.position[2]
+			x2 = rangeBlock['center'][0]
+			y2 = rangeBlock['center'][1]
+			z2 = rangeBlock['center'][2]
+			dist = math.sqrt((x2-x1)**2+(y2-y1)**2+(z2-z1)**2)
+
+			#Compare Distances
+			if dist > rangeBlock['distance']: #If the distance between points is greater than the specified distance, 
+				return False
+
+		#Do group filtering
+		if "group" in rangeBlock: #Test if the key 'group' exists in rangeBlock.
+			if rangeBlock['group'] not in self.groups: #See if we are part of the requested group. If we are, we hould have a string that is the same as the one specified.
+				return False
+
+		#Do character filtering
+		if "character" in rangeBlock:
+			if rangeBlock['character'] != self:
+				return False
+
+		return True
 
 class combatHandler():
 	alive = [] #Characters, in combat, who have not yet died

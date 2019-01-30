@@ -22,14 +22,15 @@ ACTIONBLOCK:
 RANGEBLOCK:
 	(NOTE)
 	All attributes of the RangeBlock should be understood as "AND" based, as opposed to "OR" based. For example, if both a group and an area range are specified, the RangeBlock will only target members of the group in the area range.
-	
+	If empty, no-one will be selected.
+
 	(MANDATORY)
 	
 	(NON-MANDATORY)
 	"center": A tuple specifying the coordinate of the center of an area to be effected. Has no effect if range is not specified.
 	"range": Distance from center to effect. Has no effect if no center is not specified.
 	"group": Group of characters to effect.
-	"character": Specify a specific character. If you want to select a single random character (in range, of course) use the string "r".
+	"character": Specify a specific character.
 
 REACTIONBLOCK:
 	(MANDATORY)
