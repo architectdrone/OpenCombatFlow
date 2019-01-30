@@ -7,6 +7,7 @@ class Character():
 	effects = {} #A dictionary of effects. We start with no effects.
 	position = [0, 0, 0] #Position is a list object so that it can be easily modified.
 	groups = [] #Groups of characters. These are specifed as strings. EX: "Enemies", "Undead", etc.
+	name = "Set" #A bit of a pun, as the name Set is a name from the Bible.
 
 	def getActionBlock(self):
 		'''Returns a selected inter-personal action. If the chosen action is not interpersonal, a blank dict will be returned.
@@ -27,6 +28,13 @@ class Character():
 			self.position[1] = y
 		if z is not None:
 			self.position[2] = z
+	
+	def isDead(self):
+		'''Returns true if HP <= 0, False otherwise.'''
+		if self.HP > 0:
+			return False
+		else:
+			return True
 
 	def _takeDamage(self, damageBlock):
 		'''PRIVATE: Causes character to take the amount of damage specified by the damageBlock, along with all status effects.'''
