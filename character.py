@@ -183,15 +183,15 @@ class combatHandler():
 		total = 0
 		for dType in action['damage']: #Loop through the set of all keys in the damage set.
 			if dType in reaction['resistance']: #See if that key is in the resistance.
-				total+=max(0, action['damage'][dType]-reaction['resistance'][dType]) #If so, add that to the total (with minimum being 0).
+				total+=max(0, dice.evaluate(action['damage'][dType])-dice.evaluate(reaction['resistance'][dType])) #If so, add that to the total (with minimum being 0).
 			else:
-				total+=action['damage'][dType] #Otherwise, just add the total damage amount 
+				total+=dice.evaluate(action['damage'][dType]) #Otherwise, just add the total damage amount 
 		toReturn['damageTaken'] = total #Add it to the damageBlock.
 
 		#Handle effects
 		if "effects" in action: #Only do this if effects are specified.
 			if not (total == 0 and NO_EFFECTS_ON_0_DAMAGE): #Also, only do it if the NO_EFFECTS_ON_0_DAMAGE clause doesn't hold.
-				toReturn['effects'] = action['effects'] #Add it to the damage block.
+				toReturn['effects'] = dice.evaluate(action['effects']) #Add it to the damage block.
 		
 		return toReturn
 

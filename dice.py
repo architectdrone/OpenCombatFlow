@@ -38,6 +38,9 @@ def evaluate(to_eval, return_bool = False, failure_value = 0):
 	failure_value: The value to return on a failure.
 	'''
 	
+	if type(to_eval)==int:
+		return to_eval
+
 	if ">" in to_eval:
 		condChar = ">"
 	elif "<" in to_eval:
