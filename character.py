@@ -125,7 +125,7 @@ class combatHandler():
 		actor = self.alive[self.currentCharacterIndex] #The character executing the action.
 
 		#Add log message about the start of the turn.
-		self.addLogMessage({'typeOfMessage':'startOfTurn','character':actor})
+		self.addLogMessage({'messageType':'startOfTurn','character':actor})
 
 		#Do additional things, which do not relate to getting actions.
 		actor.preTurn()
@@ -133,7 +133,7 @@ class combatHandler():
 
 		#Get, and execute, the desired action.
 		action = actor.getActionBlock()
-		self.addLogMessage({'typeOfMessage':'action', 'action': action}) #Add log message regarding the action
+		self.addLogMessage({'messageType':'action', 'action': action}) #Add log message regarding the action
 		self._executeActionBlock(action)
 		
 		#Do one more additional thing.
@@ -157,7 +157,6 @@ class combatHandler():
 		else:
 			return random.choice(inRange)
 
-
 	#Setters/Getters
 
 	def addCharacter(self, character):
@@ -168,17 +167,19 @@ class combatHandler():
 
 	def getLog(self, max_messages = -1):
 		'''
-		Gets the log. It is a list full of logBlock dictionaries, with newest entries first.
+		Gets the log. It is a list full of logBlock dictionaries.
 		If max_messages is set, it will return all messages up to max_messages. If not, it will return all messages.
 		'''
 		true_max = (len(self.log)-1,max_messages)[max_messages!=-1]
-		return self.log[::-1][0:true_max]
+		return self.log[0:true_max]
 	
 	def flushLog(self):
 		'''
 		Removes all entries currently in the log.
 		'''
 		self.log = []
+
+	#Private
 
 	def _executeActionBlock(self, action):
 		'''PRIVATE: Executes action.'''
@@ -192,16 +193,16 @@ class combatHandler():
 				#Chance Handling
 				if "chance" in action: #Check if a chance is specified.
 					if dice.evaluate(action['chance'], return_bool=True) == False: #What happens if the chance fails
-						self.addLogMessage({'message':"attackFailure", 'action': action}) #Add a log message regarding the failure.
+						self.addLogMessage({'messageType':"attackFailure", 'action': action}) #Add a log message regarding the failure.
 						if "failureCondition" in action: #Check to see if a failure condition is specified. 
 							self._executeActionBlock(action['failureCondition']) #Execute the failure condition.
 						continue #Do not get a reaction, do not deal damage.
 				
 				#Gathering reaction and creating damage
-				reaction = character.getReactionBlock(self, action) #Get the defensive reaction of the effected character.
+				reaction = character.getReactionBlock(action) #Get the defensive reaction of the effected character.
 				damage = self._getDamageBlock(action, reaction) #Get the damage block representing the damage taken by the character.
 				character._takeDamage(damage) #Cause character to take damage
-				self.addLogMessage({'typeOfMessage':'attackHit', 'damage': damage, 'action': action}) #Add log message regarding the hit.
+				self.addLogMessage({'messageType':'attackHit', 'damage': damage, 'action': action}) #Add log message regarding the hit.
 
 				#Retaliation
 				if 'action' in reaction: #Check if an action is specified in the reactionBlock.
@@ -210,7 +211,7 @@ class combatHandler():
 				#See if the character was killed by this action.
 				if character.isDead():
 					newlyDeadCharacters.append(character)
-					self.addLogMessage({'typeOfMessage':'death', 'character': character})
+					self.addLogMessage({'messageType':'death', 'character': character})
 
 		#Kill Dead characters. We can't do this from within the above for loop, because it would mess up the comprehension.
 		for character in newlyDeadCharacters:
