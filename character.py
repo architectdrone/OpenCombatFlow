@@ -152,7 +152,7 @@ class combatHandler():
 		range: A rangeBlock specifying the valid range.
 		'''
 		inRange = [character for character in self.alive if character._inRange(range)]
-		if inRange = []:
+		if inRange == []:
 			return None
 		else:
 			return random.choice(inRange)
