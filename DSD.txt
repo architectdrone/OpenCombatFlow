@@ -38,7 +38,7 @@ REACTIONBLOCK:
 	"user": The character issuing this reaction.
 
 	(NON-MANDATORY)
-	"name": Name of the reaction
+	"name": Name of the reaction. 
 	"resistance": A dictionary containing all resistances to different types of damage. Each field represents an amount of damage to reduce, with the minimum being 0. Dice format is accepted.
 		"base": (DS) Base damage reduction.
 		<any string>: (DS) Specific damage reduction.
