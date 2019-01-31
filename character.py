@@ -200,7 +200,7 @@ class combatHandler():
 				
 				#Gathering reaction and creating damage
 				reaction = character.getReactionBlock(action) #Get the defensive reaction of the effected character.
-				self.addLogMessage({'messageType':'attackHit', 'reaction': reaction, 'action': action})
+				self.addLogMessage({'messageType':'reaction', 'reaction': reaction, 'action': action})
 				damage = self._getDamageBlock(action, reaction) #Get the damage block representing the damage taken by the character.
 				character._takeDamage(damage) #Cause character to take damage
 				self.addLogMessage({'messageType':'attackHit', 'damage': damage, 'action': action}) #Add log message regarding the hit.
