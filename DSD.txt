@@ -49,4 +49,24 @@ DAMAGEBLOCK:
 	"damageTaken": An integer representing the damage to be dealt to HP.
 	"effects": A dictionary specifying effects to add.
 		<any string>: The duration of the effect specified by the string.
+
+LOGBLOCK:
+	(MANDATORY)
+	"messageType": A string indicating what type of message this entry is.
+		Values of messageType:
+			"action": Notification that character is beginning to execute an action.
+			"attackHit": Character has hit another character.
+			"attackFailure": Character has failed to hit another character.
+			"reaction": Character has reacted.
+			"death": Character has died.
+	
+	(CONDITIONALLY MANDATORY) (Mandatory in certain circumstances)
+	"character": Mandatory only if messageType="death". The character who has died.
+	"reaction": Mandatory only if messageType="reaction". The reaction to be communicated.
+	"action": Mandatory except when messageType="death". Means different things in different contexts.
+		If messageType=...
+			"action", "attackHit", or "attackFail": The action that is being carried out.
+			"reaction": The action that is being reacted to.
+			"death": The action that led to the character's death.
+	
 	
