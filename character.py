@@ -170,7 +170,7 @@ class combatHandler():
 		Gets the log. It is a list full of logBlock dictionaries.
 		If max_messages is set, it will return all messages up to max_messages. If not, it will return all messages.
 		'''
-		true_max = (len(self.log)-1,max_messages)[max_messages!=-1]
+		true_max = (len(self.log),max_messages)[max_messages!=-1]
 		return self.log[0:true_max]
 	
 	def flushLog(self):
