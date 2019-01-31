@@ -3,6 +3,7 @@ Dictionary Structure Definitions
 What is this?
 This file details the structure of the dictionaries ("blocks") used for exchanging data. I have tried to make them as extensible as possible.
 
+Note: The Symbol (DS) indicates a field that is dice-safe - that is, a dice-string can be used in place of an integer.
 ACTIONBLOCK:
 	(MANDATORY ATTRIBUTES)
 	"range": A RangeBlock specifying which characters are effected.
@@ -10,11 +11,11 @@ ACTIONBLOCK:
 	"logMessage": A string to be shown when this action is executed.
 	
 	(NON-MANDATORY ATTRIBUTES)
-	"damage": A dictionary containing all of the types of damage dealt, on attack success. Each key corresponds with either an integer (which is simply the amount of damage), or some string code. If dice/decision format is used, failure represents a damage amount of 0.
-		"base": The default damage
-		<any string>: Specify what type of damage should be dealt (EX: Piercing, Bashing, Magic). If the person being attacked does not have a resistance to that type of damage, that damage will be treated as base damage.
+	"damage": A dictionary containing all of the types of damage dealt, on attack success.
+		"base": (DS) The default damage
+		<any string>: (DS) Specify what type of damage should be dealt (EX: Piercing, Bashing, Magic). If the person being attacked does not have a resistance to that type of damage, that damage will be treated as base damage.
 	"effects": A dictionary specifying effects to apply to effected parties. The strings need not follow any convention, and exist for further specification by the programmer.
-		<any string>: The duration of the effect specified by the string.
+		<any string>: (DS) The duration of the effect specified by the string.
 	"chance": A string, in dice/decision form, representing the chance that the action succeeds. On failure, the action does not effect the targeted character, though it may effect others. If none is specified, the action succeeds 100% of the time.
 	"failureCondition": An ActionBlock that will be executed on the failure of the chance condition. If not provided, nothing will occur on failure. If "chance" is not provided, this will be ignored.
 
@@ -38,8 +39,8 @@ REACTIONBLOCK:
 	
 	(NON-MANDATORY)
 	"resistance": A dictionary containing all resistances to different types of damage. Each field represents an amount of damage to reduce, with the minimum being 0. Dice format is accepted.
-		"base": Base damage reduction.
-		<any string>: Specific damage reduction.
+		"base": (DS) Base damage reduction.
+		<any string>: (DS) Specific damage reduction.
 	"action": An actionBlock containing a retaliatory action to be executed.
 
 DAMAGEBLOCK:
