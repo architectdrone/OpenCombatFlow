@@ -54,10 +54,15 @@ class Character():
 		'''PRIVATE: Updates status effects, and any other general character things to complete before the turn starts.'''
 
 		#Tick down status effects.
+		toRemove = []
 		for effect in self.effects: #Loop through all keys in effects.
 			self.effects[effect]-=1 #Decrement the count for each.
 			if self.effects[effect] <= 0: #If the counter is less than 0
-				self.effects.pop(effect, None) #Remove effects whose counter value is 0.
+				toRemove.append(effect) #Add to a list of keys to delete.
+		
+		#Delete all those whose counters are less than 0.
+		for effect in toRemove: 
+			self.effects.pop(effect, None) #Remove effects whose counter value is 0.
 
 	def _takeDamage(self, damageBlock):
 		'''PRIVATE: Causes character to take the amount of damage specified by the damageBlock, along with all status effects.'''
@@ -236,8 +241,11 @@ class combatHandler():
 
 		#Handle effects
 		if "effects" in action: #Only do this if effects are specified.
+			toReturn['effects'] = {}
 			if not (total == 0 and NO_EFFECTS_ON_0_DAMAGE): #Also, only do it if the NO_EFFECTS_ON_0_DAMAGE clause doesn't hold.
-				toReturn['effects'] = dice.evaluate(action['effects']) #Add it to the damage block.
+				for effect in action['effects']:
+					toReturn['effects'][effect] = dice.evaluate(action['effects'][effect])
+				#toReturn['effects'] = dice.evaluate(action['effects']) #Add it to the damage block.
 		
 		return toReturn
 
