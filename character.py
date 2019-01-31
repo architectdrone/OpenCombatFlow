@@ -1,6 +1,7 @@
 #Open Combat Flow
 import dice
 import math
+import random
 
 class Character():
 	HP = 1 #Just so that the character doesn't instantly die.
@@ -115,6 +116,7 @@ class combatHandler():
 	currentCharacterIndex = 0 #The index of the current character within alive
 	log = [] #A list of log messages.
 
+	#Tools for interfacing with the combatHandler
 
 	def turn(self):
 		'''Executes the turn of the current character.'''
@@ -141,7 +143,23 @@ class combatHandler():
 		self.currentCharacterIndex+=1
 		if self.currentCharacterIndex >= len(self.alive):
 			self.currentCharacterIndex = 0
-		
+	
+	#Helpful Tools
+
+	def getRandomCharacterInRange(self, range):
+		'''
+		Gets a random character in the specified range. Returns None if there are none in that range.
+		range: A rangeBlock specifying the valid range.
+		'''
+		inRange = [character for character in self.alive if character._inRange(range)]
+		if inRange = []:
+			return None
+		else:
+			return random.choice(inRange)
+
+
+	#Setters/Getters
+
 	def addCharacter(self, character):
 		self.alive.append(character)
 	
@@ -221,4 +239,4 @@ class combatHandler():
 		
 		return toReturn
 
-	
+
