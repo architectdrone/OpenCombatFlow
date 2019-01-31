@@ -226,7 +226,7 @@ class combatHandler():
 		#Look through each key in action['damage'], and see if the reaction has an associated resistance. If not, add it to the total HP lost. If so, subtract resistance and add it to total HP lost.
 		total = 0
 		for dType in action['damage']: #Loop through the set of all keys in the damage set.
-			if dType in reaction['resistance']: #See if that key is in the resistance.
+			if 'resistance' in reaction and dType in reaction['resistance']: #See if that key is in the resistance.
 				total+=max(0, dice.evaluate(action['damage'][dType])-dice.evaluate(reaction['resistance'][dType])) #If so, add that to the total (with minimum being 0).
 			else:
 				total+=dice.evaluate(action['damage'][dType]) #Otherwise, just add the total damage amount 
