@@ -8,6 +8,7 @@ ACTIONBLOCK:
 	(MANDATORY ATTRIBUTES)
 	"range": A RangeBlock specifying which characters are effected.
 	"user": The character using the action.
+	"name": Name of the action
 	
 	(NON-MANDATORY ATTRIBUTES)
 	"damage": A dictionary containing all of the types of damage dealt, on attack success.
