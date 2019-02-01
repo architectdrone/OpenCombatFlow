@@ -19,8 +19,6 @@ ACTIONBLOCK:
 	"chance": A string, in dice/decision form, representing the chance that the action succeeds. On failure, the action does not effect the targeted character, though it may effect others. If none is specified, the action succeeds 100% of the time.
 	"failureCondition": An ActionBlock that will be executed on the failure of the chance condition. If not provided, nothing will occur on failure. If "chance" is not provided, this will be ignored.
 
-
-	
 RANGEBLOCK:
 	(NOTES)
 	All attributes of the RangeBlock should be understood as "AND" based, as opposed to "OR" based. For example, if both a group and an area range are specified, the RangeBlock will only target members of the group in the area range.
