@@ -18,8 +18,7 @@ ACTIONBLOCK:
 		<any string>: (DS) The duration of the effect specified by the string.
 	"chance": A string, in dice/decision form, representing the chance that the action succeeds. On failure, the action does not effect the targeted character, though it may effect others. If none is specified, the action succeeds 100% of the time.
 	"failureCondition": An ActionBlock that will be executed on the failure of the chance condition. If not provided, nothing will occur on failure. If "chance" is not provided, this will be ignored.
-	"accidental": A boolean representing whether or not the action was intended. Defaults to false, that is, not accidental.
-	"canReact": Whether or not effected parties can react to this action. Defaults to True. Please note that this does not change whether getReaction is called. Handling this is the responsibility of the person creating the derived class.
+
 
 	
 RANGEBLOCK:
