@@ -31,19 +31,22 @@ def _enforceHelper(blockToCheck, enforcementBlock):
 
     for keyToCheck in enforcementBlock:
         #Check if mandatory elements are present.
-        if keyToCheck.get('mandatory', default=False) == True and keyToCheck['name'] not in blockToCheck:
-            raise KeyError(f"The Key {keyToCheck['name']} must be present in this block.")
-        elif keyToCheck['name'] not in blockToCheck:
+        keyName = keyToCheck['name']
+        if keyToCheck.get('mandatory', default=False) == True and keyName not in blockToCheck:
+            raise KeyError(f"The Key {keyName} must be present in this block.")
+        elif keyName not in blockToCheck:
             continue
 
+        
         #Check if given values were consistent with required values.
+        element = blockToCheck[keyName]
         if type(keyToCheck['type']) == type:
-            if type(blockToCheck[keyToCheck['name']]) != keyToCheck['type']: #Does the key in blockToCheck have the correct type?
-                raise KeyError(f"The Key {keyToCheck['name']} must be of type {keyToCheck['type']}, not of type {type(blockToCheck[keyToCheck['name']])}")
+            if type(element) != keyToCheck['type']: #Does the key in blockToCheck have the correct type?
+                raise KeyError(f"The Key {keyName} must be of type {keyToCheck['type']}, not of type {type(element)}")
             elif keyToCheck['type'] == dict: #Should we perform additional testing on the dictionary?
-                for internalKey in blockToCheck[keyToCheck['name']]:
-                    if type(blockToCheck[keyToCheck['name']][internalKey]) != keyToCheck['dictElement']:
-                        raise KeyError(f"The Key {internalKey} within the key {keyToCheck['name']} must be of type {keyToCheck['dictElement']}, not of type {type(blockToCheck[keyToCheck['name']][internalKey])}")
+                for internalKey in element:
+                    if type(element[internalKey]) != keyToCheck['dictElement']:
+                        raise KeyError(f"The Key {internalKey} within the key {keyName} must be of type {keyToCheck['dictElement']}, not of type {type(element[internalKey])}")
         elif type(keyToCheck['type']) == str: #Should we do block testing?
-            enforce(blockToCheck[keyToCheck['name']], keyToCheck['type'])
+            enforce(element, keyToCheck['type'])
         
