@@ -66,13 +66,5 @@ def _enforceHelper(blockToCheck, enforcementBlock):
 
         #Check if given values were consistent with required values.
         element = blockToCheck[keyName]
-        if type(keyToCheck['type']) == type:
-            if type(element) != keyToCheck['type']: #Does the key in blockToCheck have the correct type?
-                raise KeyError(f"The Key {keyName} must be of type {keyToCheck['type']}, not of type {type(element)}")
-            elif keyToCheck['type'] == dict: #Should we perform additional testing on the dictionary?
-                for internalKey in element:
-                    if type(element[internalKey]) != keyToCheck['dictElement']:
-                        raise KeyError(f"The Key {internalKey} within the key {keyName} must be of type {keyToCheck['dictElement']}, not of type {type(element[internalKey])}")
-        elif type(keyToCheck['type']) == str: #Should we do block testing?
-            enforce(element, keyToCheck['type'])
+        _enforceType(element, keyToCheck['type'], dictElement=keyToCheck['dictElement'])
         
