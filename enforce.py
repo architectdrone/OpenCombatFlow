@@ -17,7 +17,6 @@ ENFORCEMENT BLOCK
 
         (NON-MANDATORY)
         "mandatory": If true, this key must be present. Otherwise, or if it not provided, it is assumed to be non-mandatory.
-        
 '''
 
 def enforce(blockToCheck, blockType):
@@ -31,7 +30,7 @@ def enforce(blockToCheck, blockType):
     -"log" test logBlock
     '''
 
-    global actionBlockPrototype, rangeBlockPrototype, reactionBlockPrototype, damageBlockPrototype, logBlockPrototype
+    global actionBlockPrototype, rangeBlockPrototype, reactionBlockPrototype, damageBlockPrototype
 
     if blockType == 'action':
         _enforceHelper(blockToCheck, actionBlockPrototype)
@@ -42,7 +41,7 @@ def enforce(blockToCheck, blockType):
     elif blockType == 'damage':
         _enforceHelper(blockToCheck, damageBlockPrototype)
     elif blockType == 'log':
-        _enforceHelper(blockToCheck, logBlockPrototype)
+        pass #Log requires a different kind of check
 
 def _enforceDiceString(diceString):
     '''
@@ -119,4 +118,92 @@ def _enforceHelper(blockToCheck, enforcementBlock):
         #Check if given values were consistent with required values.
         element = blockToCheck[keyName]
         _enforceType(element, keyToCheck['type'], dictElement=keyToCheck['dictElement'])
-        
+    
+#Prototypes
+actionBlockPrototype = [
+    {
+        'name': 'range',
+        'type': 'range',
+        'mandatory': True,
+    },
+    {
+        'name': 'user',
+        'type': Character,
+        'mandatory': True,
+    },
+    {
+        'name': 'name',
+        'type': str,
+        'mandatory': True,
+    },
+    {
+        'name': 'damage',
+        'type': dict,
+        'dictElement': 'DS'
+    },
+    {
+        'name': 'effect',
+        'type': dict,
+        'dictElement': 'DS'
+    },
+    {
+        'name': 'chance',
+        'type': 'DS',
+    },
+    {
+        'name': 'failureCondition',
+        'type': 'action',
+    }, 
+]
+
+rangeBlockPrototype = [
+    {
+        'name': 'center',
+        'type': int,
+    },
+    {
+        'name': 'range',
+        'type': int,
+    },
+    {
+        'name': 'group',
+        'type': str,
+    },
+    {
+        'name': 'character',
+        'type': Character,
+    },
+]
+
+reactionBlockPrototype = [
+    {
+        'name': 'user',
+        'type': Character,
+        'mandatory': True
+    },
+    {
+        'name': 'name',
+        'type': str,
+    },
+    {
+        'name': 'resistance',
+        'type': dict,
+        'dictElement': 'DS'
+    },
+    {
+        'name': 'action',
+        'type': 'action',
+    },
+]
+
+damageBlockPrototype = [
+    {
+        'name': 'damageTaken',
+        'type': int
+    },
+    {
+        'name': 'effects',
+        'type': dict,
+        'dictElement': int
+    },
+]
