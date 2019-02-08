@@ -28,7 +28,65 @@ def _enforceDiceString(diceString):
     '''
     PRIVATE: Makes sure the dice string is a valid dice string.
     '''
-    pass
+    if type(diceString)==int:
+	    return
+
+	if ">" in diceString:
+		condChar = ">"
+	elif "<" in diceString:
+		condChar = "<"
+	elif "=" in diceString:
+		condChar = "="
+	else:
+		_evaluateDiceStringHelper(diceString)
+
+	#Get values before and after the conditional.
+	pre = _evaluateDiceStringHelper(diceString.split(condChar)[0])
+	suf = _evaluateDiceStringHelper(diceString.split(condChar)[1])
+
+def _evaluateDiceStringHelper(diceString):
+    '''
+    PRIVATE: Helps with _evaluateDiceString. Enforces dice string without conditionals.
+    '''
+    #Convert all "-" into "+-"
+	diceStringReady = "+-".join(diceString.split('-'))
+
+	#Evaluate the new string.
+	for statement in to_eval_ready.split('+'):
+		#See if the statement is a dice statement, by testing if there is a 'd' in it.
+		if "d" in statement:
+			before_d = statement.split('d')[0] #This will cause an error if it cannot be converted to int
+            after_d = statement.split('d')[0] #This will cause an error if it cannot be converted to int
+            assert len(statement.split('d')) == 2, "Dice statements must by of the form xdy, where x and y are integers."
+		elif statement == "":
+			continue
+		else: #Otherwise, we assume that it is a constant.
+			int(statement) #This will cause an error if it cannot be converted to int
+	
+def evaluate(to_eval, return_bool = False, failure_value = 0):
+	'''Evaluate a dice string, and return a number consistent with the query.
+	return_bool: Set this to true to return a boolean value instead of a number.
+	failure_value: The value to return on a failure.
+	'''
+	
+	if type(to_eval)==int:
+		return to_eval
+
+	if ">" in to_eval:
+		condChar = ">"
+	elif "<" in to_eval:
+		condChar = "<"
+	elif "=" in to_eval:
+		condChar = "="
+	else:
+		if return_bool:
+			return True
+		else:
+			return _evaluateHelper(to_eval)
+
+	#Get values before and after the conditional.
+	pre = _evaluateHelper(to_eval.split(condChar)[0])
+	suf = _evaluateHelper(to_eval.split(condChar)[1])
 
 
 def _enforceType(toCheck, requestedType, dictElement = None):
