@@ -19,10 +19,30 @@ ENFORCEMENT BLOCK
         "mandatory": If true, this key must be present. Otherwise, or if it not provided, it is assumed to be non-mandatory.
         
 '''
+
 def enforce(blockToCheck, blockType):
     '''
-    Enforce rules for the given blockType.
+    Enforce rules for the given blockType. blockType is a string.
+    If blockType =:
+    -"action" test actionBlock
+    -"range" test rangeBlock
+    -"reaction" test reactionBlock
+    -"damage" test damageBlock
+    -"log" test logBlock
     '''
+
+    global actionBlockPrototype, rangeBlockPrototype, reactionBlockPrototype, damageBlockPrototype, logBlockPrototype
+
+    if blockType == 'action':
+        _enforceHelper(blockToCheck, actionBlockPrototype)
+    elif blockType == 'range':
+        _enforceHelper(blockToCheck, rangeBlockPrototype)
+    elif blockType == 'reaction':
+        _enforceHelper(blockToCheck, reactionBlockPrototype)
+    elif blockType == 'damage':
+        _enforceHelper(blockToCheck, damageBlockPrototype)
+    elif blockType == 'log':
+        _enforceHelper(blockToCheck, logBlockPrototype)
 
 def _enforceDiceString(diceString):
     '''
