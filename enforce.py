@@ -41,8 +41,8 @@ def _enforceDiceString(diceString):
         _evaluateDiceStringHelper(diceString)
 
     #Get values before and after the conditional.
-    pre = _evaluateDiceStringHelper(diceString.split(condChar)[0])
-    suf = _evaluateDiceStringHelper(diceString.split(condChar)[1])
+    _evaluateDiceStringHelper(diceString.split(condChar)[0])
+    _evaluateDiceStringHelper(diceString.split(condChar)[1])
 
 def _evaluateDiceStringHelper(diceString):
     '''
