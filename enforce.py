@@ -31,18 +31,18 @@ def _enforceDiceString(diceString):
     if type(diceString)==int:
 	    return
 
-	if ">" in diceString:
-		condChar = ">"
-	elif "<" in diceString:
-		condChar = "<"
-	elif "=" in diceString:
-		condChar = "="
-	else:
-		_evaluateDiceStringHelper(diceString)
+    if ">" in diceString:
+        condChar = ">"
+    elif "<" in diceString:
+        condChar = "<"
+    elif "=" in diceString:
+        condChar = "="
+    else:
+        _evaluateDiceStringHelper(diceString)
 
-	#Get values before and after the conditional.
-	pre = _evaluateDiceStringHelper(diceString.split(condChar)[0])
-	suf = _evaluateDiceStringHelper(diceString.split(condChar)[1])
+    #Get values before and after the conditional.
+    pre = _evaluateDiceStringHelper(diceString.split(condChar)[0])
+    suf = _evaluateDiceStringHelper(diceString.split(condChar)[1])
 
 def _evaluateDiceStringHelper(diceString):
     '''
