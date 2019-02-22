@@ -74,6 +74,7 @@ def _enforceDiceString(diceString):
     if type(diceString)==int:
 	    return
 
+    condChar = ""
     if ">" in diceString:
         condChar = ">"
     elif "<" in diceString:
@@ -82,6 +83,7 @@ def _enforceDiceString(diceString):
         condChar = "="
     else:
         _evaluateDiceStringHelper(diceString)
+        return
 
     #Get values before and after the conditional.
     _evaluateDiceStringHelper(diceString.split(condChar)[0])
@@ -115,11 +117,11 @@ def _enforceType(toCheck, requestedType, dictElement = None):
     -If requestedType is any string besides "DS", it checks that toCheck is a valid block of the type requestedType.
     '''
     if type(requestedType) == type: #If we are doing a check of a 'normal' variable test. (IE, not specified by a string.) We tell this by seeing if requestedType is of type type, or of type string
-        if type(toCheck) != requestedType: #See if the types match. 
-            raise KeyError #If they don't match, raise an error.
+        if not issubclass(type(toCheck), requestedType): #See if the types match. The "issubclass" function determines if toCheck has a parent of requestedType 
+            raise KeyError(f"The element {toCheck} is of type {type(toCheck)}, not of required type {requestedType}.") #If they don't match, raise an error.
         if requestedType == dict and dictElement is not None: #If the type is a dictionary, run additional testing of the given dictionary.
             for internalKey in toCheck: #Check each individual key in the dictionary.
-                _enforceType(internalKey, dictElement) #Test each element.
+                _enforceType(toCheck[internalKey], dictElement) #Test each element.
     elif type(requestedType) == str: #If the requestedType is a string, perform special testing, including block and dicestring, as specified by the string.
         if requestedType == "DS": #If requested type is 'DS', we enforce the dice string.
             _enforceDiceString(toCheck)
@@ -134,14 +136,14 @@ def _enforceHelper(blockToCheck, enforcementBlock):
     for keyToCheck in enforcementBlock:
         #Check if mandatory elements are present.
         keyName = keyToCheck['name']
-        if keyToCheck.get('mandatory', default=False) == True and keyName not in blockToCheck:
+        if keyToCheck.get('mandatory', False) == True and keyName not in blockToCheck:
             raise KeyError(f"The Key {keyName} must be present in this block.")
         elif keyName not in blockToCheck:
             continue
 
         #Check if given values were consistent with required values.
         element = blockToCheck[keyName]
-        _enforceType(element, keyToCheck['type'], dictElement=keyToCheck['dictElement'])
+        _enforceType(element, keyToCheck['type'], dictElement=keyToCheck['dictElement'] if 'dictElement' in keyToCheck else None)
     
 #Prototypes
 actionBlockPrototype = [
