@@ -41,7 +41,31 @@ def enforce(blockToCheck, blockType):
     elif blockType == 'damage':
         _enforceHelper(blockToCheck, damageBlockPrototype)
     elif blockType == 'log':
-        pass #Log requires a different kind of check
+        #Do log testing. This requires a different kind of check.
+        assert 'messageType' in blockToCheck
+        assert type(blockToCheck['messageType']) == str
+        messageType = blockToCheck['messageType']
+        required = []
+        if messageType ==  'startOfTurn':
+            required = ['character']
+        elif messageType ==  'action':
+            required = ['action']
+        elif messageType ==  'attackHit':
+            required = ['action', 'damage']
+        elif messageType ==  'attackFailure':
+            required = ['action']
+        elif messageType ==  'reaction':
+            required = ['action', 'reaction']
+        elif messageType ==  'death':
+            required = ['action', 'character']
+        else:
+            raise KeyError(f"Message Type {messageType} is not valid")
+        
+        #Check to make sure all required keys are present.
+        for i in required:
+            if i not in blockToCheck:
+                raise KeyError(f"Message Type {messageType} requires key {i}")
+        
 
 def _enforceDiceString(diceString):
     '''
