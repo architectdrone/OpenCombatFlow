@@ -1,5 +1,5 @@
 #Purpose: To enforce the format of blocks and dice-strings.
-from character import Character
+import character as c
 
 '''
 ENFORCEMENT BLOCK
@@ -152,7 +152,7 @@ actionBlockPrototype = [
     },
     {
         'name': 'user',
-        'type': Character,
+        'type': c.Character,
         'mandatory': True,
     },
     {
@@ -195,14 +195,14 @@ rangeBlockPrototype = [
     },
     {
         'name': 'character',
-        'type': Character,
+        'type': c.Character,
     },
 ]
 
 reactionBlockPrototype = [
     {
         'name': 'user',
-        'type': Character,
+        'type': c.Character,
         'mandatory': True
     },
     {

@@ -66,7 +66,9 @@ class Character():
 
 	def _takeDamage(self, damageBlock):
 		'''PRIVATE: Causes character to take the amount of damage specified by the damageBlock, along with all status effects.'''
-		
+		import enforce
+		enforce.enforce(damageBlock, "damage")
+
 		#Take damage.
 		if "damageTaken" in damageBlock:
 			self.HP-=damageBlock['damageTaken']
@@ -83,6 +85,8 @@ class Character():
 		
 	def _inRange(self, rangeBlock):
 		'''PRIVATE: Returns true if the character is in a certain range.'''
+		import enforce
+		enforce.enforce(rangeBlock, "range")
 
 		#Check if the range is empty
 		if rangeBlock == {}:
@@ -156,6 +160,9 @@ class combatHandler():
 		Gets a random character in the specified range. Returns None if there are none in that range.
 		range: A rangeBlock specifying the valid range.
 		'''
+		import enforce
+		enforce.enforce(range,"range")
+
 		inRange = [character for character in self.alive if character._inRange(range)]
 		if inRange == []:
 			return None
@@ -188,7 +195,9 @@ class combatHandler():
 
 	def _executeActionBlock(self, action):
 		'''PRIVATE: Executes action.'''
-		
+		import enforce
+		enforce.enforce(action, "action")
+
 		newlyDeadCharacters = []
 		#For each effected character, as determined by their response to the range query, get defense and deal damage
 		range = action['range']
@@ -205,8 +214,10 @@ class combatHandler():
 				
 				#Gathering reaction and creating damage
 				reaction = character.getReactionBlock(action) #Get the defensive reaction of the effected character.
+				enforce.enforce(reaction, "reaction")
 				self.addLogMessage({'messageType':'reaction', 'reaction': reaction, 'action': action})
 				damage = self._getDamageBlock(action, reaction) #Get the damage block representing the damage taken by the character.
+				enforce.enforce(damage, "damage")
 				character._takeDamage(damage) #Cause character to take damage
 				self.addLogMessage({'messageType':'attackHit', 'damage': damage, 'action': action}) #Add log message regarding the hit.
 
@@ -226,6 +237,10 @@ class combatHandler():
 				
 	def _getDamageBlock(self, action, reaction):
 		'''PRIVATE: Get damage'''
+		import enforce
+		enforce.enforce(action, "action")
+		enforce.enforce(reaction, "reaction")
+		
 		NO_EFFECTS_ON_0_DAMAGE = True #Whether or not effects should be dealt if 0 damage is dealt.
 		
 		toReturn = {}
