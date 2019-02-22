@@ -65,9 +65,9 @@ LOGBLOCK:
 	(CONDITIONALLY MANDATORY) (Mandatory in certain circumstances)
 	"character": Mandatory only if messageType="death" or "startOfTurn". The character who has died or whose turn has started.
 	"reaction": Mandatory only if messageType="reaction". The reaction to be communicated.
-	"action": Mandatory except when messageType="death". Means different things in different contexts.
+	"action": Mandatory except when messageType="death" or "startOfTurn". Means different things in different contexts.
 		If messageType=...
-			"action", "attackHit", or "attackFail": The action that is being carried out.
+			"action", "attackHit", or "attackFailure": The action that is being carried out.
 			"reaction": The action that is being reacted to.
 			"death": The action that led to the character's death.
 	"damage": Mandatory only if messageType="attackHit". The damage done by the attack.
