@@ -1,5 +1,6 @@
 #Open Combat Flow
-import dice
+import OpenCombatFlow
+import OpenCombatFlow.dice as dice
 import math
 import random
 
@@ -66,7 +67,7 @@ class Character():
 
 	def _takeDamage(self, damageBlock):
 		'''PRIVATE: Causes character to take the amount of damage specified by the damageBlock, along with all status effects.'''
-		import enforce
+		import OpenCombatFlow.enforce as enforce
 		enforce.enforce(damageBlock, "damage")
 
 		#Take damage.
@@ -85,7 +86,7 @@ class Character():
 		
 	def _inRange(self, rangeBlock):
 		'''PRIVATE: Returns true if the character is in a certain range.'''
-		import enforce
+		import OpenCombatFlow.enforce as enforce
 		enforce.enforce(rangeBlock, "range")
 
 		#Check if the range is empty
@@ -160,7 +161,7 @@ class combatHandler():
 		Gets a random character in the specified range. Returns None if there are none in that range.
 		range: A rangeBlock specifying the valid range.
 		'''
-		import enforce
+		import OpenCombatFlow.enforce as enforce
 		enforce.enforce(range,"range")
 
 		inRange = [character for character in self.alive if character._inRange(range)]
@@ -195,7 +196,7 @@ class combatHandler():
 
 	def _executeActionBlock(self, action):
 		'''PRIVATE: Executes action.'''
-		import enforce
+		import OpenCombatFlow.enforce as enforce
 		enforce.enforce(action, "action")
 
 		newlyDeadCharacters = []
@@ -237,7 +238,7 @@ class combatHandler():
 				
 	def _getDamageBlock(self, action, reaction):
 		'''PRIVATE: Get damage'''
-		import enforce
+		import OpenCombatFlow.enforce as enforce
 		enforce.enforce(action, "action")
 		enforce.enforce(reaction, "reaction")
 		
