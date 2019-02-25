@@ -18,7 +18,7 @@ ENFORCEMENT BLOCK
         (NON-MANDATORY)
         "mandatory": If true, this key must be present. Otherwise, or if it not provided, it is assumed to be non-mandatory.
 '''
-
+blockContext = {}
 def enforce(blockToCheck, blockType):
     '''
     Enforce rules for the given blockType. blockType is a string.
@@ -31,6 +31,9 @@ def enforce(blockToCheck, blockType):
     '''
 
     global actionBlockPrototype, rangeBlockPrototype, reactionBlockPrototype, damageBlockPrototype
+    global blockContext
+
+    blockContext = blockToCheck
 
     if blockType == 'action':
         _enforceHelper(blockToCheck, actionBlockPrototype)
@@ -59,17 +62,18 @@ def enforce(blockToCheck, blockType):
         elif messageType ==  'death':
             required = ['action', 'character']
         else:
-            raise KeyError(f"Message Type {messageType} is not valid")
+            raise KeyError(f"Message Type {messageType} is not valid. (Evaluating {blockContext})")
         
         #Check to make sure all required keys are present.
         for i in required:
             if i not in blockToCheck:
-                raise KeyError(f"Message Type {messageType} requires key {i}")
+                raise KeyError(f"Message Type {messageType} requires key {i} (Evaluating {blockContext})")
         
 
 def _enforceDiceString(diceString):
     '''
     PRIVATE: Makes sure the dice string is a valid dice string.
+    block: If block is True, print details of the current block.
     '''
     if type(diceString)==int:
 	    return
@@ -100,13 +104,19 @@ def _evaluateDiceStringHelper(diceString):
     for statement in diceStringReady.split('+'):
         #See if the statement is a dice statement, by testing if there is a 'd' in it.
         if "d" in statement:
-            before_d = statement.split('d')[0] #This will cause an error if it cannot be converted to int
-            after_d = statement.split('d')[0] #This will cause an error if it cannot be converted to int
+            try:
+                before_d = int(statement.split('d')[0]) #This will cause an error if it cannot be converted to int
+                after_d = int(statement.split('d')[0]) #This will cause an error if it cannot be converted to int
+            except:
+                raise KeyError(f"Invalid Syntax for Dice String {diceString}")
             assert len(statement.split('d')) == 2, "Dice statements must by of the form xdy, where x and y are integers."
         elif statement == "":
             continue
         else: #Otherwise, we assume that it is a constant.
-            int(statement) #This will cause an error if it cannot be converted to int
+            try:
+                int(statement) #This will cause an error if it cannot be converted to int
+            except:
+                raise KeyError(f"Invalid Syntax for Dice String {diceString}")
 	
 def _enforceType(toCheck, requestedType, dictElement = None):
     '''
@@ -116,9 +126,10 @@ def _enforceType(toCheck, requestedType, dictElement = None):
     -If requestedType is a string equal to "DS", it makes sure that toCheck is a valid dice string.
     -If requestedType is any string besides "DS", it checks that toCheck is a valid block of the type requestedType.
     '''
+    global blockContext
     if type(requestedType) == type: #If we are doing a check of a 'normal' variable test. (IE, not specified by a string.) We tell this by seeing if requestedType is of type type, or of type string
         if not issubclass(type(toCheck), requestedType): #See if the types match. The "issubclass" function determines if toCheck has a parent of requestedType 
-            raise KeyError(f"The element {toCheck} is of type {type(toCheck)}, not of required type {requestedType}.") #If they don't match, raise an error.
+            raise KeyError(f"The element {toCheck} is of type {type(toCheck)}, not of required type {requestedType}. (Evaluating {blockContext})") #If they don't match, raise an error.
         if requestedType == dict and dictElement is not None: #If the type is a dictionary, run additional testing of the given dictionary.
             for internalKey in toCheck: #Check each individual key in the dictionary.
                 _enforceType(toCheck[internalKey], dictElement) #Test each element.
@@ -132,12 +143,13 @@ def _enforceHelper(blockToCheck, enforcementBlock):
     '''
     PRIVATE: This is to enforce protocols using a pre-determined enforcement block. Please use an appropriate front-end channel to access this functionality.
     '''
+    global blockContext
 
     for keyToCheck in enforcementBlock:
         #Check if mandatory elements are present.
         keyName = keyToCheck['name']
         if keyToCheck.get('mandatory', False) == True and keyName not in blockToCheck:
-            raise KeyError(f"The Key {keyName} must be present in this block.")
+            raise KeyError(f"The Key {keyName} must be present in this block. (Evaluating {blockContext})")
         elif keyName not in blockToCheck:
             continue
 
