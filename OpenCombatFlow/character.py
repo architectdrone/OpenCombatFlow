@@ -131,6 +131,9 @@ class combatHandler():
 	def turn(self):
 		'''Executes the turn of the current character.'''
 		
+		if self.alive == []:
+			raise Exception("No Characters are alive.")
+
 		#Get the actor (character executing actions)
 		actor = self.alive[self.currentCharacterIndex] #The character executing the action.
 
