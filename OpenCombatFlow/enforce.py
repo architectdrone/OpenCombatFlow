@@ -28,6 +28,9 @@ def enforce(blockToCheck, blockType):
     -"reaction" test reactionBlock
     -"damage" test damageBlock
     -"log" test logBlock
+    @param blockToCheck The block to check.
+    @param blockType The type of block the blockToCheck should be.
+    @raise KeyError If there is a syntax error with the block.
     '''
 
     global actionBlockPrototype, rangeBlockPrototype, reactionBlockPrototype, damageBlockPrototype
@@ -73,7 +76,6 @@ def enforce(blockToCheck, blockType):
 def _enforceDiceString(diceString):
     '''
     PRIVATE: Makes sure the dice string is a valid dice string.
-    block: If block is True, print details of the current block.
     '''
     if type(diceString)==int:
 	    return
