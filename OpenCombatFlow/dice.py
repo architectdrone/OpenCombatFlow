@@ -3,7 +3,7 @@ import random
 def _roll(to_roll):
 	'''
 	Pass in a string which contains only a dice statement (to_roll), and return a number consistent with the query.
-	@param to_roll A dice string in the form "XdY", where X and Y are integers.
+	@param to_roll A dice string in the form "XdY", where X and Y are integers. Note that X may be negative, but Y cannot be. (How would tht work?)
 	@return The result of rolling the dice.
 	'''
 	numberDice = int(to_roll.split('d')[0])
