@@ -1,4 +1,9 @@
-#Open Combat Flow
+'''
+Open Combat Flow - character.py
+@purpose Defines the virtual Character class, and the combatHandler, which handles interactions between Characters.
+@author Owen Mellema
+@date 2-25-19
+'''
 import opencombatflow
 import opencombatflow.dice as dice
 import math

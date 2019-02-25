@@ -1,4 +1,9 @@
-#Purpose: To enforce the format of blocks and dice-strings.
+'''
+Open Combat Flow - enforce.py
+@purpose Enforces the format of blocks and dice strings.
+@author Owen Mellema
+@date 2-25-19
+'''
 import opencombatflow.character as c
 
 '''

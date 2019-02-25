@@ -1,3 +1,9 @@
+'''
+Open Combat Flow - dice.py
+@purpose Evaluates dice strings, using the evaluate() function.
+@author Owen Mellema
+@date 2-25-19
+'''
 import random
 #See DiceStringFormat.txt for how to use dice strings.
 def _roll(to_roll):
