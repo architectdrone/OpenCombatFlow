@@ -157,6 +157,10 @@ class Character():
 		return True
 
 class combatHandler():
+	'''
+	The "flow" part of OpenCombatFlow. Handles interactions between characters.
+	'''
+
 	alive = [] #Characters, in combat, who have not yet died
 	dead = [] #Characters, in combat, (meaning those who have not yet despawned, and may still be looted), who have died.
 	currentCharacterIndex = 0 #The index of the current character within alive
@@ -165,7 +169,11 @@ class combatHandler():
 	#Tools for interfacing with the combatHandler
 
 	def turn(self):
-		'''Executes the turn of the current character.'''
+		'''
+		Executes the turn of the current character.
+		@post The turn of the current character is completed, and moves to the next character.
+		@raise Exception If no characters are alive.
+		'''
 		
 		if self.alive == []:
 			raise Exception("No Characters are alive.")
@@ -197,8 +205,9 @@ class combatHandler():
 
 	def getRandomCharacterInRange(self, range):
 		'''
-		Gets a random character in the specified range. Returns None if there are none in that range.
-		range: A rangeBlock specifying the valid range.
+		Gets a random character in the specified range.
+		@param range A rangeBlock specifying the valid range.
+		@return A random character in the range. None if there are none in that range.
 		'''
 		import opencombatflow.enforce as enforce
 		enforce.enforce(range,"range")
@@ -212,7 +221,8 @@ class combatHandler():
 	def getAllInRange(self, range):
 		'''
 		Gets all characters in given range
-		range: A rangeBlock specifying the valid range.
+		@param range A rangeBlock specifying the valid range.
+		@return All characters in the range. None if there are none in that range.
 		'''
 		import opencombatflow.enforce as enforce
 		enforce.enforce(range,"range")
@@ -223,29 +233,47 @@ class combatHandler():
 	#Setters/Getters
 
 	def addCharacter(self, character):
+		'''
+		Adds a character to those alive.
+		@param character The character to add.
+		@post The character has been added.
+		'''
 		self.alive.append(character)
 	
 	def addLogMessage(self, message):
+		'''
+		Adds a message to the log.
+		@param message The message to add.
+		@post The message has been added.
+		'''
 		self.log.append(message)
 
 	def getLog(self, max_messages = -1):
 		'''
 		Gets the log. It is a list full of logBlock dictionaries.
-		If max_messages is set, it will return all messages up to max_messages. If not, it will return all messages.
+		@param max_messages The maximum number of messages to return.
+		@return A list of messages
 		'''
-		true_max = (len(self.log),max_messages)[max_messages!=-1]
+
+		true_max = len(self.log) if max_messages <= 0 else max_messages
 		return self.log[0:true_max]
 	
 	def flushLog(self):
 		'''
 		Removes all entries currently in the log.
+		@post No messages remain in the log.
 		'''
+
 		self.log = []
 
 	#Private
 
 	def _executeActionBlock(self, action):
-		'''PRIVATE: Executes action.'''
+		'''
+		PRIVATE: Executes action.
+		@param The action to execute.
+		@post The action has been executed.
+		'''
 		import opencombatflow.enforce as enforce
 		enforce.enforce(action, "action")
 
@@ -287,7 +315,11 @@ class combatHandler():
 			self.dead.append(character)
 				
 	def _getDamageBlock(self, action, reaction):
-		'''PRIVATE: Get damage'''
+		'''
+		PRIVATE: Get damage
+		@param action The action to get damage from.
+		@param reaction The reaction to reduce damage with.
+		'''
 		import opencombatflow.enforce as enforce
 		enforce.enforce(action, "action")
 		enforce.enforce(reaction, "reaction")
