@@ -1,7 +1,7 @@
 from setuptools import setup
 
-setup(name='opencombatflow ',
-      version='1',
+setup(name='opencombatflow',
+      version='1.0',
       description='Tools for rapid development of RPGs',
       url='https://github.com/architectdrone/OpenCombatFlow',
       author='Owen Mellema',
