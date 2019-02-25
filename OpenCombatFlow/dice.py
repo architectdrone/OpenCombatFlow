@@ -1,51 +1,12 @@
 '''
 Open Combat Flow - dice.py
 @purpose Evaluates dice strings, using the evaluate() function.
+@note The file DiceStringFormat.txt documents proper usage of this module.
 @author Owen Mellema
 @date 2-25-19
 '''
 import random
-#See DiceStringFormat.txt for how to use dice strings.
-def _roll(to_roll):
-	'''
-	Pass in a string which contains only a dice statement (to_roll), and return a number consistent with the query.
-	@param to_roll A dice string in the form "XdY", where X and Y are integers. Note that X may be negative, but Y cannot be. (How would tht work?)
-	@return The result of rolling the dice.
-	'''
-	numberDice = int(to_roll.split('d')[0])
-	numberSides = int(to_roll.split('d')[1])
-	
-	total = 0
-	for i in range(abs(numberDice)):
-		total+=random.randrange(1, numberSides+1)
-	
-	if numberDice < 0: #If there was a negative number of dice.
-		return -1*total
-	
-	return total
-	
-def _evaluateHelper(to_eval):
-	'''
-	PRIVATE: A Helper function for evaluating dice strings.
-	@param to_eval A dice string with no conditionals.
-	@return the result of rolling the dice.
-	'''
-	
-	#Convert all "-" into "+-"
-	to_eval_ready = "+-".join(to_eval.split('-'))
 
-	#Evaluate the new string.
-	total = 0
-	for statement in to_eval_ready.split('+'):
-		#See if the statement is a dice statement, by testing if there is a 'd' in it.
-		if "d" in statement:
-			total+=_roll(statement)
-		elif statement == "":
-			pass
-		else: #Otherwise, we assume that it is a constant.
-			total+=int(statement)
-	return total
-	
 def evaluate(to_eval, return_bool = False, failure_value = 0):
 	'''
 	Evaluate a dice string, and return a number consistent with the query (IE, roll the dice)
@@ -109,3 +70,43 @@ def evaluate(to_eval, return_bool = False, failure_value = 0):
 			else:
 				return failure_value
 
+def _roll(to_roll):
+	'''
+	Pass in a string which contains only a dice statement (to_roll), and return a number consistent with the query.
+	@param to_roll A dice string in the form "XdY", where X and Y are integers. Note that X may be negative, but Y cannot be. (How would tht work?)
+	@return The result of rolling the dice.
+	'''
+	numberDice = int(to_roll.split('d')[0])
+	numberSides = int(to_roll.split('d')[1])
+	
+	total = 0
+	for i in range(abs(numberDice)):
+		total+=random.randrange(1, numberSides+1)
+	
+	if numberDice < 0: #If there was a negative number of dice.
+		return -1*total
+	
+	return total
+	
+def _evaluateHelper(to_eval):
+	'''
+	PRIVATE: A Helper function for evaluating dice strings.
+	@param to_eval A dice string with no conditionals.
+	@return the result of rolling the dice.
+	'''
+	
+	#Convert all "-" into "+-"
+	to_eval_ready = "+-".join(to_eval.split('-'))
+
+	#Evaluate the new string.
+	total = 0
+	for statement in to_eval_ready.split('+'):
+		#See if the statement is a dice statement, by testing if there is a 'd' in it.
+		if "d" in statement:
+			total+=_roll(statement)
+		elif statement == "":
+			pass
+		else: #Otherwise, we assume that it is a constant.
+			total+=int(statement)
+	return total
+	
