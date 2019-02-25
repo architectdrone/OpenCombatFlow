@@ -5,38 +5,60 @@ import math
 import random
 
 class Character():
-	HP = 1 #Just so that the character doesn't instantly die.
+	'''
+	A single character.
+	'''
+	HP = 1 #Hit Points. When this number reaches 0, the character is dead,
 	effects = {} #A dictionary of effects. We start with no effects.
-	position = [0, 0, 0] #Position is a list object so that it can be easily modified.
+	position = [0, 0, 0] #The coordinates of the character. If you don't plan on using a coordinat system, this can be safely ignored.
 	groups = [] #Groups of characters. These are specifed as strings. EX: "Enemies", "Undead", etc.
-	name = "Set" #A bit of a pun, as the name Set is a name from the Bible.
+	name = "Set" #The name of the character. This can also be safely ignored, and is only dded for your convience.
 
 	#Things to implement in derived classes.
 	def getActionBlock(self):
-		'''Returns a selected inter-personal action. If the chosen action is not interpersonal, a blank dict will be returned.
-		This is a placeholder, and should be implemented in a derived class.'''
+		'''
+		Returns a selected inter-personal action. If the chosen action is not interpersonal, a blank dict will be returned.
+		@note This is a placeholder, and should be implemented in a derived class.
+		@raise NotImplementedError If not implemented.
+		@return The action that the character will use.
+		'''
 
 		raise NotImplementedError
 	
 	def getReactionBlock(self, action):
-		'''Returns a selected reaction. If the chosen action is not interpersonal, a blank dict will be returned.
-		This is a placeholder, and should be implemented in a derived class.'''
+		'''
+		Returns a selected reaction. If the chosen action is not interpersonal, a blank dict will be returned.
+		@note This is a placeholder, and should be implemented in a derived class.
+		@param action The action that the character is reacting to.
+		@raise NotImplementedError If not implemented.
+		@return The reaction to be used.
+		'''
 
 		raise NotImplementedError
 
 	def preTurn(self):
-		'''This method is called before _update. It doesn't need to be implemented, but it might help with things like status effects.'''
+		'''
+		This method is called before _update. It doesn't need to be implemented, but it might help with things like status effects.
+		'''
 
 		pass
 	
 	def postTurn(self):
-		'''This method is called at the very end of the turn. It doesn't need to be implemented.'''
+		'''
+		This method is called at the very end of the turn. It doesn't need to be implemented.
+		'''
 
 		pass
 	
 	#Getters/Setters
 	def setPosition(self, x, y=None, z=None):
-		'''Sets the position. Specify however many coordinates you need, up to 3.'''
+		'''
+		Sets the position. Specify however many coordinates you need, up to 3.
+		@param x The new X coordinate
+		@param y The new Y coordinate
+		@param z The new Z coordinate
+		@post The position member variable is altered to refled the change.
+		'''
 		self.position[0] = x
 		if y is not None:
 			self.position[1] = y
@@ -44,7 +66,10 @@ class Character():
 			self.position[2] = z
 	
 	def isDead(self):
-		'''Returns true if HP <= 0, False otherwise.'''
+		'''
+		Returns Whether or not the character is dead.
+		@return true if HP <= 0, False otherwise.
+		'''
 		if self.HP > 0:
 			return False
 		else:
@@ -52,7 +77,10 @@ class Character():
 
 	#Private Methods
 	def _update(self):
-		'''PRIVATE: Updates status effects, and any other general character things to complete before the turn starts.'''
+		'''
+		PRIVATE: Updates status effects, and any other general character things to complete before the turn starts.
+		@post Effects are ticked down, and inactive effects (those with time remaining <= 0) are removed.
+		'''
 
 		#Tick down status effects.
 		toRemove = []
@@ -66,7 +94,11 @@ class Character():
 			self.effects.pop(effect, None) #Remove effects whose counter value is 0.
 
 	def _takeDamage(self, damageBlock):
-		'''PRIVATE: Causes character to take the amount of damage specified by the damageBlock, along with all status effects.'''
+		'''
+		PRIVATE: Causes character to take the amount of damage specified by the damageBlock, along with all status effects.
+		@param damageBlock The amount of damage to take
+		@post Character takes the given amount of damage.
+		'''
 		import opencombatflow.enforce as enforce
 		enforce.enforce(damageBlock, "damage")
 
@@ -85,7 +117,11 @@ class Character():
 					self.effects[effect]=damageBlock['effects'][effect] #If the effect is not active, we add the effect and set it to the given duration.
 		
 	def _inRange(self, rangeBlock):
-		'''PRIVATE: Returns true if the character is in a certain range.'''
+		'''
+		PRIVATE: Returns true if the character is in a certain range.
+		@param rangeBlock The range to test that the character is in.
+		@return True if the character is in the given range.
+		'''
 		import opencombatflow.enforce as enforce
 		enforce.enforce(rangeBlock, "range")
 
