@@ -171,6 +171,10 @@ class combatHandler():
 			return random.choice(inRange)
 
 	def getAllInRange(self, range):
+		'''
+		Gets all characters in given range
+		range: A rangeBlock specifying the valid range.
+		'''
 		import opencombatflow.enforce as enforce
 		enforce.enforce(range,"range")
 
