@@ -1,6 +1,6 @@
 # OpenCombatFlow
 
-Hello, and welcome to OpenCombatFlow! I am Owen Mellema, and I am pleased to present you with this package.
+Hello, and welcome to OpenCombatFlow! I am Owen Mellema, and I am pleased to present you with this package. OCF is distributed under the MIT License.
 
 
 ## Usage (As of 1.0)
