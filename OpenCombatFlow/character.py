@@ -170,6 +170,13 @@ class combatHandler():
 		else:
 			return random.choice(inRange)
 
+	def getAllInRange(self, range):
+		import opencombatflow.enforce as enforce
+		enforce.enforce(range,"range")
+
+		inRange = [character for character in self.alive if character._inRange(range)]
+		return inRange
+
 	#Setters/Getters
 
 	def addCharacter(self, character):
