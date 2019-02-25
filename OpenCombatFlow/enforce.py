@@ -1,5 +1,5 @@
 #Purpose: To enforce the format of blocks and dice-strings.
-import OpenCombatFlow.character as c
+import opencombatflow.character as c
 
 '''
 ENFORCEMENT BLOCK
