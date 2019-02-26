@@ -1,9 +1,0 @@
-MANIFEST.in
-readme.md
-setup.py
-opencombatflow/DSD.txt
-opencombatflow/DiceStringFormat.txt
-opencombatflow.egg-info/PKG-INFO
-opencombatflow.egg-info/SOURCES.txt
-opencombatflow.egg-info/dependency_links.txt
-opencombatflow.egg-info/top_level.txt

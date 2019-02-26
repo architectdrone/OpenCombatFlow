@@ -1,0 +1,11 @@
+*test*
+__pycache__/
+.vscode/
+__pycache__/dice.cpython-36.pyc
+doxygen/
+*.pyc
+/dist/
+*.egg-info/
+opencombatflow.egg-info/PKG-INFO
+opencombatflow.egg-info/SOURCES.txt
+build/
