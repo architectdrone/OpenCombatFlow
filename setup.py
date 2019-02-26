@@ -10,4 +10,5 @@ setup(name='opencombatflow',
       url='https://github.com/architectdrone/OpenCombatFlow',
       author='Owen Mellema',
       license='MIT',
-      keywords='games game rpg turn')
+      keywords='games game rpg turn',
+      include_package_data=True)
