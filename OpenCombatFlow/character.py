@@ -168,7 +168,7 @@ class combatHandler():
 
 	alive = [] #Characters, in combat, who have not yet died
 	dead = [] #Characters, in combat, (meaning those who have not yet despawned, and may still be looted), who have died.
-	currentCharacterIndex = 0 #The index of the current character within alive
+	_currentCharacterIndex = 0 #The index of the current character within alive
 	log = [] #A list of log messages.
 
 	#Tools for interfacing with the combatHandler
@@ -184,7 +184,7 @@ class combatHandler():
 			raise Exception("No Characters are alive.")
 
 		#Get the actor (character executing actions)
-		actor = self.alive[self.currentCharacterIndex] #The character executing the action.
+		actor = self.alive[self._currentCharacterIndex] #The character executing the action.
 
 		#Add log message about the start of the turn.
 		self.addLogMessage({'messageType':'startOfTurn','character':actor})
@@ -202,9 +202,9 @@ class combatHandler():
 		actor.postTurn()
 
 		#Go to the next character.
-		self.currentCharacterIndex+=1
-		if self.currentCharacterIndex >= len(self.alive):
-			self.currentCharacterIndex = 0
+		self._currentCharacterIndex+=1
+		if self._currentCharacterIndex >= len(self.alive):
+			self._currentCharacterIndex = 0
 	
 	#Helpful Tools
 
