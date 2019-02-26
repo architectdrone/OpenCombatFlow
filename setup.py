@@ -1,8 +1,7 @@
 from setuptools import setup
 
-def readme():
-      with open("readme.md") as f:
-            return f.read()
+with open("readme.md", "r") as fh:
+    long_description = fh.read()
 
 setup(name='opencombatflow',
       version='1.0',
@@ -11,4 +10,5 @@ setup(name='opencombatflow',
       author='Owen Mellema',
       license='MIT',
       keywords='games game rpg turn',
+      long_description=long_description,
       include_package_data=True)
